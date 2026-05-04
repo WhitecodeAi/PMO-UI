@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genesis Campus Club</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a2744;
+            --gold: #c9973a;
+            --cream: #f5f0e8;
+            --steel: #4a6fa5;
+            --white: #ffffff;
+            --soft: #e8eef7;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            overflow-x: hidden;
+            padding: 25px;
+        }
+
+        .title {
+            color: #5C6AC4;
+        }
+
+        /* ─── LIVE CLOCK ─── */
+        #clock-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: #111827;
+            text-align: right;
+            padding: 6px 24px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.08em;
+        }
+
+        #currentTime {
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        /* ─── CANVAS BACKGROUND ─── */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.18;
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 30px;
+            width: 100%;
+            z-index: 100;
+            padding: 18px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(20px);
+            background: rgba(26, 39, 68, 0.9);
+            border-bottom: 1px solid rgba(201, 151, 58, 0.3);
+            animation: slideDown 0.8s ease forwards;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 0.04em;
+        }
+
+        .nav-logo span {
+            color: var(--white);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 36px;
+        }
+
+        nav ul a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.88rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        nav ul a:hover {
+            color: var(--gold);
+        }
+
+        .nav-cta {
+            background: var(--gold);
+            color: var(--navy) !important;
+            padding: 8px 22px;
+            border-radius: 2px;
+            font-weight: 500 !important;
+        }
+
+        .nav-cta:hover {
+            background: #e8b04a !important;
+            color: var(--navy) !important;
+        }
+
+        /* ─── HERO ─── */
+        #hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--navy) 0%, #243560 60%, #1a2744 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 0 -25px;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 151, 58, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 151, 58, 0.08) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridPan 20s linear infinite;
+        }
+
+        @keyframes gridPan {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: 60px 60px;
+            }
+        }
+
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            animation: orb 8s ease-in-out infinite alternate;
+        }
+
+        .orb1 {
+            width: 500px;
+            height: 500px;
+            background: var(--gold);
+            top: -100px;
+            right: -100px;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: var(--steel);
+            bottom: 50px;
+            left: -80px;
+            animation-delay: -3s;
+        }
+
+        @keyframes orb {
+            from {
+                transform: scale(1) translate(0, 0);
+            }
+
+            to {
+                transform: scale(1.2) translate(30px, -20px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 820px;
+            padding: 0 24px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            color: var(--white);
+            margin-bottom: 28px;
+            animation: fadeUp 0.9s 0.5s both;
+        }
+
+        .hero-title em {
+            color: var(--gold);
+            font-style: normal;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.8;
+            max-width: 540px;
+            margin: 0 auto;
+            animation: fadeUp 0.9s 0.7s both;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(201, 151, 58, 0.8), transparent);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0)
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(8px)
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ─── STATS ─── */
+        #stats {
+            position: relative;
+            z-index: 1;
+            background: var(--navy);
+            padding: 60px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-bottom: 1px solid rgba(201, 151, 58, 0.2);
+            margin: 0 -25px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        /* ─── SECTIONS COMMON ─── */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            line-height: 1.15;
+            color: var(--navy);
+        }
+
+        .section-title.light {
+            color: var(--white);
+        }
+
+        /* ─── ABOUT ─── */
+        #about {
+            padding: 120px 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            background: var(--cream);
+            margin: 0 -25px;
+        }
+
+        .about-text p {
+            color: #4a5568;
+            line-height: 1.9;
+            margin-top: 24px;
+            font-size: 1rem;
+        }
+
+        .about-graphic {
+            position: relative;
+            height: 420px;
+        }
+
+        .about-card {
+            position: absolute;
+            background: var(--white);
+            border-radius: 4px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(26, 39, 68, 0.12);
+            border-left: 3px solid var(--gold);
+        }
+
+        .about-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .about-card p {
+            font-size: 0.82rem;
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        .card-a {
+            top: 0;
+            left: 0;
+            width: 220px;
+            animation: floatA 5s ease-in-out infinite;
+        }
+
+        .card-b {
+            top: 100px;
+            right: 0;
+            width: 200px;
+            animation: floatB 5s ease-in-out 1s infinite;
+        }
+
+        .card-c {
+            bottom: 0;
+            left: 60px;
+            width: 240px;
+            animation: floatA 5s ease-in-out 2s infinite;
+        }
+
+        @keyframes floatA {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-12px)
+            }
+        }
+
+        @keyframes floatB {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-8px)
+            }
+        }
+
+        /* ─── VISION MISSION ─── */
+        #vision {
+            padding: 120px 80px;
+            background: var(--navy);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 40px;
+            margin: 0 -25px;
+        }
+
+        .vm-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(201, 151, 58, 0.2);
+            border-radius: 4px;
+            padding: 44px 36px;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vm-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .vm-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-6px);
+        }
+
+        .vm-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .vm-icon {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .vm-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .vm-card p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            font-size: 0.92rem;
+        }
+
+        .vm-card ul {
+            list-style: none;
+        }
+
+        .vm-card ul li {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.88rem;
+            line-height: 1.7;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .vm-card ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+
+        /* ─── CLUBS ─── */
+        #clubs {
+            padding: 120px 80px;
+            background: var(--soft);
+            margin: 0 -25px;
+        }
+
+        .clubs-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .clubs-header p {
+            color: #718096;
+            margin-top: 16px;
+            font-size: 1rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 24px;
+        }
+
+        .club-card {
+            background: var(--white);
+            border-radius: 6px;
+            padding: 36px 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(26, 39, 68, 0.06);
+            transition: all 0.4s;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .club-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(201, 151, 58, 0.06), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .club-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(26, 39, 68, 0.15);
+            border-bottom-color: var(--gold);
+        }
+
+        .club-card:hover::after {
+            opacity: 1;
+        }
+
+        .club-icon {
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            display: block;
+        }
+
+        .club-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--navy);
+            line-height: 1.4;
+        }
+
+        .club-card p {
+            color: #a0aec0;
+            font-size: 0.78rem;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        /* ─── ACTIVITIES ─── */
+        #activities {
+            padding: 120px 80px;
+            background: var(--navy);
+            margin: 0 -25px;
+        }
+
+        .activities-header {
+            margin-bottom: 60px;
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .activity-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 40px 32px;
+            transition: all 0.35s;
+        }
+
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(201, 151, 58, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .activity-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(201, 151, 58, 0.15);
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+
+        .activity-item h3 {
+            color: var(--gold);
+            font-size: 1.05rem;
+            letter-spacing: 0.04em;
+            margin-bottom: 12px;
+        }
+
+        .activity-item p {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.88rem;
+            line-height: 1.8;
+        }
+
+        /* ─── JOIN CTA ─── */
+        #join {
+            padding: 120px 80px;
+            background: linear-gradient(135deg, #1a2744 0%, #243560 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin: 0 -25px;
+        }
+
+        .cta-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(201, 151, 58, 0.15);
+            animation: rings 4s ease-in-out infinite;
+        }
+
+        .ring1 {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 0s;
+        }
+
+        .ring2 {
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 0.5s;
+        }
+
+        .ring3 {
+            width: 800px;
+            height: 800px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 1s;
+        }
+
+        @keyframes rings {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: translate(-50%, -50%) scale(1)
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1.05)
+            }
+        }
+
+        .join-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .join-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .join-content h2 em {
+            color: var(--gold);
+            font-style: normal;
+        }
+
+        .join-content p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.05rem;
+            max-width: 500px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--navy);
+            padding: 14px 36px;
+            border: none;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: #e8b04a;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(201, 151, 58, 0.4);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: #111827;
+            padding: 60px 80px 30px;
+            color: rgba(255, 255, 255, 0.4);
+            margin: 0 -25px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+        }
+
+        .footer-brand p {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            max-width: 260px;
+        }
+
+        .footer-col h4 {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.78rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+        }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1100px) {
+            #stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .clubs-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            nav {
+                padding: 16px 30px;
+            }
+
+            nav ul {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            #about,
+            #vision {
+                padding: 80px 30px;
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            #clubs,
+            #activities,
+            #join,
+            footer {
+                padding: 80px 30px;
+            }
+
+            .clubs-grid,
+            .activities-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            nav {
+                top: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LIVE UTC CLOCK -->
+    <div id="clock-bar">🕐 UTC: <span id="currentTime"></span></div>
+
+    <!-- ANIMATED BACKGROUND CANVAS -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">Genesis <span>Campus Club</span></div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#clubs">Clubs</a></li>
+            <li><a href="#activities">Activities</a></li>
+            <li><a href="#vision">Mission</a></li>
+            <li><a href="#join" class="nav-cta">Join Now</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-orb orb1"></div>
+        <div class="hero-orb orb2"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Where <em>Passion</em><br>Meets Purpose</h1>
+            <p class="hero-sub">A vibrant student community designed to enrich campus life and support the all-round
+                development of every learner.</p>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <div id="stats">
+        <div class="stat-item reveal">
+            <span class="stat-num" data-target="5">0</span>
+            <span class="stat-label">Specialized Clubs</span>
+        </div>
+        <div class="stat-item reveal">
+            <span class="stat-num" data-target="500">0</span>
+            <span class="stat-label">Active Members</span>
+        </div>
+        <div class="stat-item reveal">
+            <span class="stat-num" data-target="30">0</span>
+            <span class="stat-label">Events Per Year</span>
+        </div>
+        <div class="stat-item reveal">
+            <span class="stat-num" data-target="5">0</span>
+            <span class="stat-label">Years of Excellence</span>
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-text reveal">
+            <div class="section-label">About the Club</div>
+            <h2 class="section-title">A Community Built<br>for Every Student</h2>
+            <p>The Genesis Campus Club is a dynamic platform where students explore interests, express talents, develop
+                leadership qualities, and grow both personally and professionally.</p>
+            <p>With a blend of creativity, technology, culture, social initiatives, fitness activities, and intellectual
+                engagement, we ensure every student experiences a holistic college journey.</p>
+        </div>
+        <div class="about-graphic reveal">
+            <div class="about-card card-a">
+                <h4>🌱 Holistic Growth</h4>
+                <p>Academic &amp; personal development through every program</p>
+            </div>
+            <div class="about-card card-b">
+                <h4>🤝 Community</h4>
+                <p>Fostering teamwork &amp; meaningful peer connections</p>
+            </div>
+            <div class="about-card card-c">
+                <h4>💡 Innovation</h4>
+                <p>Encouraging creative thinking &amp; real-world application</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISION MISSION -->
+    <section id="vision">
+        <div class="vm-card reveal">
+            <div class="vm-icon">🌟</div>
+            <h3>Our Vision</h3>
+            <p>To cultivate a vibrant, inclusive, and inspiring campus environment where students grow intellectually,
+                socially, and creatively — contributing to a thriving college culture.</p>
+        </div>
+        <div class="vm-card reveal">
+            <div class="vm-icon">🎯</div>
+            <h3>Our Mission</h3>
+            <ul>
+                <li>Nurture student talent through impactful events &amp; workshops</li>
+                <li>Develop leadership, communication &amp; teamwork skills</li>
+                <li>Encourage innovation &amp; holistic personal growth</li>
+                <li>Build a strong sense of community on campus</li>
+            </ul>
+        </div>
+        <div class="vm-card reveal">
+            <div class="vm-icon">📌</div>
+            <h3>Core Objectives</h3>
+            <ul>
+                <li>Promote active extracurricular participation</li>
+                <li>Organize seminars, events &amp; competitions</li>
+                <li>Help students discover their unique strengths</li>
+                <li>Bridge academia with real-world exposure</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- CLUBS -->
+    <section id="clubs">
+        <div class="clubs-header reveal">
+            <div class="section-label">Our Five Pillars</div>
+            <h2 class="section-title">Explore the Sub-Clubs</h2>
+            <p>Each club offers a unique space to learn, lead, and connect with fellow students.</p>
+        </div>
+        <div class="clubs-grid">
+            <div class="club-card reveal">
+                <span class="club-icon">💼</span>
+                <h3>Campus to Corporate Club</h3>
+                <p>Career readiness, industry exposure &amp; professional skills</p>
+            </div>
+            <div class="club-card reveal">
+                <span class="club-icon">🎭</span>
+                <h3>Culture &amp; Cause Club</h3>
+                <p>Arts, festivals, social initiatives &amp; cultural celebrations</p>
+            </div>
+            <div class="club-card reveal">
+                <span class="club-icon">🏃</span>
+                <h3>Health &amp; Fitness Club</h3>
+                <p>Physical wellness, sports activities &amp; healthy habits</p>
+            </div>
+            <div class="club-card reveal">
+                <span class="club-icon">💻</span>
+                <h3>Technosavvy Club</h3>
+                <p>Tech skills, digital literacy &amp; innovation workshops</p>
+            </div>
+            <div class="club-card reveal">
+                <span class="club-icon">🧠</span>
+                <h3>Bright Minds Club</h3>
+                <p>Intellectual debates, quizzes &amp; creative thinking</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACTIVITIES -->
+    <section id="activities">
+        <div class="activities-header reveal">
+            <div class="section-label" style="color: var(--gold)">Programs &amp; Initiatives</div>
+            <h2 class="section-title light">What We Do</h2>
+        </div>
+        <div class="activities-grid">
+            <div class="activity-item reveal">
+                <div class="activity-num">01</div>
+                <h3>Skill-Building Workshops</h3>
+                <p>Personality development, public speaking, creative arts, digital literacy, entrepreneurship &amp;
+                    leadership training.</p>
+            </div>
+            <div class="activity-item reveal">
+                <div class="activity-num">02</div>
+                <h3>Cultural Events</h3>
+                <p>Talent showcases, festival celebrations, themed activities, cultural nights, and art exhibitions
+                    highlighting student creativity.</p>
+            </div>
+            <div class="activity-item reveal">
+                <div class="activity-num">03</div>
+                <h3>Community Service</h3>
+                <p>Social awareness drives, environmental initiatives, charity campaigns &amp; volunteering programs
+                    encouraging citizenship.</p>
+            </div>
+            <div class="activity-item reveal">
+                <div class="activity-num">04</div>
+                <h3>Industry Exposure</h3>
+                <p>Guest lectures, industry visits, internship guidance and career mentoring for professional readiness.
+                </p>
+            </div>
+            <div class="activity-item reveal">
+                <div class="activity-num">05</div>
+                <h3>Sports &amp; Wellness</h3>
+                <p>Tournaments, yoga sessions, fitness challenges, and wellness workshops promoting a healthy campus
+                    lifestyle.</p>
+            </div>
+            <div class="activity-item reveal">
+                <div class="activity-num">06</div>
+                <h3>Innovation Challenges</h3>
+                <p>Hackathons, startup pitches, science fairs &amp; design challenges sparking creativity and problem
+                    solving.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- JOIN CTA -->
+    <section id="join">
+        <div class="cta-ring ring1"></div>
+        <div class="cta-ring ring2"></div>
+        <div class="cta-ring ring3"></div>
+        <div class="join-content reveal">
+            <div class="section-label" style="color: var(--gold)">Be Part of Something Special</div>
+            <h2>Join <em>Genesis</em> Today</h2>
+            <p>Transform your college journey into one of learning, inspiration, and meaningful growth.</p>
+            <a href="#" class="btn-primary">Register Now</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Genesis Campus Club</h3>
+                <p>Empowering students to discover their strengths, collaborate with peers, and contribute positively to
+                    the campus community.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Clubs</h4>
+                <ul>
+                    <li><a href="#">Campus to Corporate</a></li>
+                    <li><a href="#">Culture &amp; Cause</a></li>
+                    <li><a href="#">Health &amp; Fitness</a></li>
+                    <li><a href="#">Technosavvy</a></li>
+                    <li><a href="#">Bright Minds</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#vision">Mission</a></li>
+                    <li><a href="#activities">Activities</a></li>
+                    <li><a href="#join">Join Now</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#">Genesis College</a></li>
+                    <li><a href="#">info@genesisclub.edu</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Genesis Campus Club. All rights reserved.</span>
+            <span>Genesis College</span>
+        </div>
+    </footer>
+
+    <script>
+        /* ── LIVE UTC CLOCK ── */
+        function showTime() {
+            document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+        }
+        showTime();
+        setInterval(function () { showTime(); }, 1000);
+
+        /* ── ANIMATED PARTICLE CANVAS ── */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', resize);
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.alpha = Math.random() * 0.6 + 0.1;
+                this.color = Math.random() > 0.6 ? '#c9973a' : '#4a6fa5';
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+            }
+            draw() {
+                ctx.save(); ctx.globalAlpha = this.alpha; ctx.fillStyle = this.color;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.save(); ctx.globalAlpha = (1 - dist / 100) * 0.12; ctx.strokeStyle = '#c9973a';
+                        ctx.lineWidth = 0.5; ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke(); ctx.restore();
+                    }
+                }
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connectParticles();
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        /* ── SCROLL REVEAL ── */
+        const revealEls = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80);
+            });
+        }, { threshold: 0.1 });
+        revealEls.forEach(el => io.observe(el));
+
+        /* ── COUNTER ANIMATION ── */
+        function animateCounter(el, target, duration = 1800) {
+            let start = null;
+            const step = (ts) => {
+                if (!start) start = ts;
+                const progress = Math.min((ts - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.floor(eased * target) + (target >= 100 ? '+' : '');
+                if (progress < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
+        const counterIO = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.querySelectorAll('[data-target]').forEach(n => animateCounter(n, +n.dataset.target));
+                    counterIO.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        counterIO.observe(document.getElementById('stats'));
+
+        /* ── SMOOTH NAV HIGHLIGHT ── */
+        const sections = document.querySelectorAll('section[id], div[id]');
+        const navLinks = document.querySelectorAll('nav ul a');
+        window.addEventListener('scroll', () => {
+            let cur = '';
+            sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) cur = s.id; });
+            navLinks.forEach(a => { a.style.color = a.getAttribute('href') === `#${cur}` ? '#c9973a' : ''; });
+        });
+    </script>
+</body>
+
+</html>
