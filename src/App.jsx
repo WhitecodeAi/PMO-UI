@@ -24,6 +24,7 @@ function App() {
       phase: targetPhase,
       phaseName: laneInfo.name,
       description: `Project request assigned to ${pmName}. Original requester: ${request.requester}.`,
+      details: request.details,
       owner: {
         name: pmName,
         initials: pmInitials,

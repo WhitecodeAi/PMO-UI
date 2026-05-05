@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, onUpdateStageDetail, lanes }) {
     const [expandedPhase, setExpandedPhase] = useState(null);
     const [isTeamExpanded, setIsTeamExpanded] = useState(false);
+    const [isDetailsExpanded, setIsDetailsExpanded] = useState(true);
 
     const handleDateMask = (e, projectId, phaseId, stageId) => {
         let value = e.target.value.replace(/\D/g, '');
@@ -48,7 +49,7 @@ export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, 
     }
 
     const owner = project.owner || { name: 'Unassigned', initials: '?', color: '#dfe1e6' };
-    const phaseName = project.phaseName || 'Project Intake';
+    const phaseName = project.phaseName || 'New Project';
     const color = project.color || '#42526e';
     const team = project.team || [];
     const stages = project.stages || {};
@@ -106,8 +107,53 @@ export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, 
                             </div>
                         </div>
 
+                        {project.details && (
+                            <div className={`phase-accordion-item ${isDetailsExpanded ? 'expanded' : ''}`}>
+                                <div 
+                                    className="phase-accordion-header"
+                                    onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
+                                >
+                                    <div className="phase-accordion-title">
+                                        <svg className={`chevron ${isDetailsExpanded ? 'expanded' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                        Project Requirements
+                                    </div>
+                                </div>
+                                {isDetailsExpanded && (
+                                    <div className="phase-accordion-content" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', borderTop: '1px solid var(--border-light)' }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '13px' }}>
+                                            <div><strong>Contact:</strong> {project.details.contactPerson || project.requester || 'N/A'}</div>
+                                            <div><strong>Role:</strong> {project.details.role || 'N/A'}</div>
+                                            <div><strong>Phone:</strong> {project.details.contactNumber || 'N/A'}</div>
+                                            <div><strong>Email:</strong> {project.details.email || 'N/A'}</div>
+                                            {project.details.existingWebsite && <div style={{ gridColumn: '1 / -1' }}><strong>Existing Website:</strong> {project.details.existingWebsite}</div>}
+                                            {project.details.hostingPlan && <div><strong>Hosting:</strong> {project.details.hostingPlan}</div>}
+                                            {project.details.supportHrs && <div><strong>Support Hrs:</strong> {project.details.supportHrs}</div>}
+                                            {project.details.pages && <div><strong>Pages:</strong> {project.details.pages}</div>}
+                                        </div>
+                                        {project.details.features && project.details.features.length > 0 && (
+                                            <div>
+                                                <strong style={{ fontSize: '13px' }}>Standard Features:</strong>
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
+                                                    {project.details.features.map(f => (
+                                                        <span key={f} style={{ background: 'var(--bg-lane)', padding: '4px 8px', borderRadius: '4px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                                                            {f}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {project.details.scope && (
+                                            <div>
+                                                <strong style={{ fontSize: '13px' }}>Other Comments:</strong>
+                                                <p style={{ fontSize: '13px', marginTop: '4px', whiteSpace: 'pre-wrap', color: 'var(--text-secondary)' }}>{project.details.scope}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         <div className="section">
-                            
                             <div className={`phase-accordion-item ${isTeamExpanded ? 'expanded' : ''}`}>
                                 <div 
                                     className="phase-accordion-header"
