@@ -47,14 +47,18 @@ export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, 
         );
     }
 
+    const owner = project.owner || { name: 'Unassigned', initials: '?', color: '#dfe1e6' };
+    const phaseName = project.phaseName || 'Project Intake';
+    const color = project.color || '#42526e';
+    const team = project.team || [];
+    const stages = project.stages || {};
+
     let totalStages = 0;
     let completedStages = 0;
-    if (project.stages) {
-        Object.values(project.stages).forEach(phaseStages => {
-            totalStages += phaseStages.length;
-            completedStages += phaseStages.filter(s => s.completed).length;
-        });
-    }
+    Object.values(stages).forEach(phaseStages => {
+        totalStages += phaseStages.length;
+        completedStages += phaseStages.filter(s => s.completed).length;
+    });
     const progressPercentage = totalStages === 0 ? 0 : Math.round((completedStages / totalStages) * 100);
 
     return (
@@ -63,8 +67,8 @@ export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, 
                 <div className="panel-inner">
                     <div className="panel-header">
                         <div className="panel-header-content">
-                            <span className="panel-phase" style={{ color: project.color }}>
-                                {project.phaseName}
+                            <span className="panel-phase" style={{ color: color }}>
+                                {phaseName}
                             </span>
                             <h2>{project.title}</h2>
                         </div>
@@ -78,10 +82,10 @@ export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, 
                             <div className="detail-item" style={{ flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
                                 <span className="label" style={{ minWidth: '100px' }}>Project Manager:</span>
                                 <div className="value avatar-group" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <div className="avatar" style={{ backgroundColor: project.owner.color, width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: 'white', fontWeight: '600' }}>
-                                        {project.owner.initials}
+                                    <div className="user-avatar mini" style={{ backgroundColor: owner.color }}>
+                                        {owner.initials}
                                     </div>
-                                    <span>{project.owner.name}</span>
+                                    <span>{owner.name}</span>
                                 </div>
                             </div>
                             <div style={{ display: 'flex', gap: '24px' }}>
@@ -114,15 +118,15 @@ export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, 
                                         Team Members
                                     </div>
                                     <span className="phase-accordion-badge">
-                                        {project.team?.length || 0}
+                                        {team.length || 0}
                                     </span>
                                 </div>
                                 {isTeamExpanded && (
                                     <div className="phase-accordion-content">
                                         <div className="team-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                            {project.team?.map((member, idx) => (
+                                            {team.map((member, idx) => (
                                                 <div key={idx} className="team-member" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                                    <div className="avatar" style={{ backgroundColor: member.color, width: '28px', height: '28px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: 'white', fontWeight: '600' }}>
+                                                    <div className="user-avatar mini" style={{ backgroundColor: member.color }}>
                                                         {member.initials}
                                                     </div>
                                                     <span style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)' }}>
@@ -140,7 +144,7 @@ export default function DetailsPanel({ project, isOpen, onClose, onToggleStage, 
                             
                             <div className="phases-accordion">
                                 {lanes && lanes.map(lane => {
-                                    const phaseStages = project.stages[lane.id] || [];
+                                    const phaseStages = stages[lane.id] || [];
                                     const phaseTotal = phaseStages.length;
                                     const phaseCompleted = phaseStages.filter(s => s.completed).length;
                                     const isExpanded = expandedPhase === lane.id;

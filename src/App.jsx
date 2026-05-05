@@ -12,17 +12,17 @@ function App() {
   const [intakeRequests, setIntakeRequests] = useState(initialIntakeData);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
 
-  const handleAssignPM = (intakeId, pmName = "New PM", pmInitials = "NP", pmColor = "#8b5cf6") => {
+  const handleAssignPM = (intakeId, targetPhase = 'initiation', pmName = "New PM", pmInitials = "NP", pmColor = "#546a7b") => {
     const request = intakeRequests.find(r => r.id === intakeId);
     if (!request) return;
 
-    // Create new project object
-    const newProjectId = `p${Date.now()}`;
+    const laneInfo = lanes.find(l => l.id === targetPhase) || lanes[0];
+    
     const newProject = {
-      id: newProjectId,
+      id: intakeId,
       title: request.title,
-      phase: 'initiation',
-      phaseName: 'Project Initiation',
+      phase: targetPhase,
+      phaseName: laneInfo.name,
       description: `Project request assigned to ${pmName}. Original requester: ${request.requester}.`,
       owner: {
         name: pmName,
@@ -62,10 +62,25 @@ function App() {
 
     setProjects(prev => ({
       ...prev,
-      [newProjectId]: newProject
+      [intakeId]: newProject
     }));
 
     setIntakeRequests(prev => prev.filter(r => r.id !== intakeId));
+  };
+
+  const handleUpdatePM = (projectId, pmName, pmInitials, pmColor) => {
+    setProjects(prev => {
+      const projectKey = Object.keys(prev).find(key => prev[key].id === projectId);
+      if (!projectKey) return prev;
+      return {
+        ...prev,
+        [projectKey]: {
+          ...prev[projectKey],
+          owner: { name: pmName, initials: pmInitials, color: pmColor },
+          team: [{ initials: pmInitials, color: pmColor }]
+        }
+      };
+    });
   };
 
   const handleCreateRequest = (newRequest) => {
@@ -95,6 +110,26 @@ function App() {
         [projectKey]: {
           ...prev[projectKey],
           phase: laneId,
+          phaseName: laneInfo.name,
+          color: laneInfo.color
+        }
+      };
+    });
+  };
+
+  const handleStatusChange = (projectId, newPhaseId) => {
+    setProjects(prev => {
+      const projectKey = Object.keys(prev).find(key => prev[key].id === projectId);
+      if (!projectKey) return prev;
+
+      const laneInfo = lanes.find(l => l.id === newPhaseId);
+      if (!laneInfo) return prev;
+
+      return {
+        ...prev,
+        [projectKey]: {
+          ...prev[projectKey],
+          phase: newPhaseId,
           phaseName: laneInfo.name,
           color: laneInfo.color
         }
@@ -159,7 +194,8 @@ function App() {
 
   // Find the full project object based on selected ID
   const selectedProjectKey = Object.keys(projects).find(key => projects[key].id === selectedProjectId);
-  const selectedProject = selectedProjectKey ? projects[selectedProjectKey] : null;
+  const selectedIntake = intakeRequests.find(r => r.id === selectedProjectId);
+  const selectedProject = selectedProjectKey ? projects[selectedProjectKey] : selectedIntake;
 
   return (
     <div className="app-container">
@@ -177,9 +213,13 @@ function App() {
         ) : (
           <ProjectPool 
             projects={projects}
+            lanes={lanes}
             intakeRequests={intakeRequests}
             onAssignPM={handleAssignPM}
+            onUpdatePM={handleUpdatePM}
             onCreateRequest={handleCreateRequest}
+            onStatusChange={handleStatusChange}
+            onCardClick={handleCardClick}
           />
         )}
       </main>

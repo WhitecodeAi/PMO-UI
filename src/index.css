@@ -116,17 +116,22 @@ body {
   margin-top: auto;
 }
 
-.sidebar .user-avatar.mini {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #0052cc;
-  color: white;
+/* Global Avatar Styling */
+.user-avatar {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  border-radius: 50%;
+  color: #ffffff;
   font-weight: 600;
+  flex-shrink: 0;
+}
+
+.user-avatar.mini {
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
+  background-color: #0052cc;
   cursor: pointer;
 }
 
@@ -547,16 +552,16 @@ body {
 }
 
 .avatar {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background-color: #deebff;
-  color: #0747a6;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 .avatar-name {
@@ -958,7 +963,6 @@ body {
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
   background: var(--bg-surface);
-  overflow: hidden;
 }
 
 .pool-accordion-header {
@@ -969,6 +973,8 @@ body {
   background: #f4f5f7;
   cursor: pointer;
   user-select: none;
+  border-top-left-radius: calc(var(--radius-md) - 1px);
+  border-top-right-radius: calc(var(--radius-md) - 1px);
 }
 
 .pool-accordion-header h3 {
@@ -1049,6 +1055,7 @@ body {
   color: var(--text-secondary);
   cursor: pointer;
   outline: none;
+  min-width: 180px;
 }
 
 .status-badge {
@@ -1076,6 +1083,48 @@ body {
   background-color: #dfe1e6;
   color: #42526e;
   border: 1px dashed #a5adba;
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+}
+
+.avatar-dropdown-container {
+  position: relative;
+}
+
+.pm-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 260px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 8px 0;
+}
+
+.pm-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pm-dropdown-item:hover {
+  background-color: var(--bg-hover);
+}
+
+.pm-dropdown-item span {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .large-modal {

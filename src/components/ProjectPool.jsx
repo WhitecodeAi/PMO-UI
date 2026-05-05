@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 
-export default function ProjectPool({ projects = {}, intakeRequests = [], onAssignPM, onCreateRequest }) {
+export default function ProjectPool({ projects = {}, lanes = [], intakeRequests = [], onAssignPM, onUpdatePM, onCreateRequest, onStatusChange, onCardClick }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeExpanded, setActiveExpanded] = useState(true);
   const [intakeExpanded, setIntakeExpanded] = useState(true);
+  const [dropdownOpenId, setDropdownOpenId] = useState(null);
+  
+  const PM_USERS = [
+    { name: "Unassigned", initials: "?", color: "#dfe1e6", isUnassigned: true },
+    { name: "Shruti Jog", initials: "SJ", color: "#0052cc" },
+    { name: "Dharmaraj Pandhare", initials: "DP", color: "#ff5630" },
+    { name: "Aditya", initials: "A", color: "#0052cc" },
+    { name: "Ganesh Samgir", initials: "GS", color: "#546a7b" },
+    { name: "AvaniKaneriya", initials: "A", color: "#36b37e" },
+    { name: "Jaydeep", initials: "JK", color: "#ff5630" }
+  ];
   
   const [newReq, setNewReq] = useState({ 
     title: '', 
@@ -28,10 +39,26 @@ export default function ProjectPool({ projects = {}, intakeRequests = [], onAssi
     item.requester?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const calculateNextId = () => {
+    const allIds = [
+      ...Object.keys(projects),
+      ...intakeRequests.map(r => r.id)
+    ];
+    let maxNum = 0;
+    allIds.forEach(id => {
+      const match = id.match(/WC(\d+)/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        if (num > maxNum) maxNum = num;
+      }
+    });
+    return `WC${(maxNum + 1).toString().padStart(3, '0')}`;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newRequest = {
-      id: `REQ-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+      id: calculateNextId(),
       title: newReq.title,
       epic: newReq.epic,
       requester: newReq.contactPerson,
@@ -52,20 +79,56 @@ export default function ProjectPool({ projects = {}, intakeRequests = [], onAssi
     });
   };
 
+  const handlePMSelect = (projectId, user, isIntake) => {
+    if (isIntake) {
+      if (!user.isUnassigned) {
+        onAssignPM(projectId, 'initiation', user.name, user.initials, user.color);
+      }
+    } else {
+      if (!user.isUnassigned && onUpdatePM) {
+        onUpdatePM(projectId, user.name, user.initials, user.color);
+      }
+    }
+    setDropdownOpenId(null);
+  };
+
   const renderActiveRow = (project) => (
     <div className="pool-row" key={project.id}>
-      <div className="pool-row-left">
-        <input type="checkbox" className="pool-checkbox" />
+      <div className="pool-row-left" onClick={() => onCardClick && onCardClick(project)} style={{ cursor: 'pointer' }}>
         <span className="pool-id">{project.id.toUpperCase()}</span>
         <span className="pool-title">{project.title}</span>
       </div>
       <div className="pool-row-right">
-        {project.tags && project.tags.map((tag, i) => (
-          <span key={i} className={`epic-badge ${tag.class || ''}`}>{tag.text}</span>
-        ))}
-        <span className="status-badge active-status">{project.phaseName}</span>
-        <div className="user-avatar mini" style={{ backgroundColor: project.owner?.color || '#0052cc' }}>
-          {project.owner?.initials || '?'}
+        <select 
+          className="status-dropdown" 
+          value={project.phase}
+          onChange={(e) => onStatusChange(project.id, e.target.value)}
+        >
+          {lanes.map(lane => (
+            <option key={lane.id} value={lane.id}>{lane.name}</option>
+          ))}
+        </select>
+        <div className="avatar-dropdown-container">
+          <div 
+            className="user-avatar mini" 
+            style={{ backgroundColor: project.owner?.color || '#475569' }} 
+            title={project.owner?.name}
+            onClick={() => setDropdownOpenId(dropdownOpenId === project.id ? null : project.id)}
+          >
+            {project.owner?.initials || '?'}
+          </div>
+          {dropdownOpenId === project.id && (
+            <div className="pm-dropdown-menu">
+              {PM_USERS.map((u, i) => (
+                <div key={i} className="pm-dropdown-item" onClick={() => handlePMSelect(project.id, u, false)}>
+                  <div className={`user-avatar mini ${u.isUnassigned ? 'unassigned' : ''}`} style={{ backgroundColor: u.isUnassigned ? '' : u.color }}>
+                    {u.initials}
+                  </div>
+                  <span>{u.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -73,40 +136,46 @@ export default function ProjectPool({ projects = {}, intakeRequests = [], onAssi
 
   const renderIntakeRow = (item) => (
     <div className="pool-row" key={item.id}>
-      <div className="pool-row-left">
-        <input type="checkbox" className="pool-checkbox" />
+      <div className="pool-row-left" onClick={() => onCardClick && onCardClick(item)} style={{ cursor: 'pointer' }}>
         <span className="pool-id">{item.id}</span>
         <span className="pool-title">{item.title}</span>
       </div>
       <div className="pool-row-right">
-        <span className="epic-badge">{item.epic}</span>
         <select 
           className="status-dropdown" 
           value="intake"
           onChange={(e) => {
-            if(e.target.value === 'initiation') {
-              // Simulating assigning a PM when moving out of intake
-              onAssignPM(item.id, "Sarah Jenkins", "SJ", "#10b981");
+            if(e.target.value !== 'intake') {
+              onAssignPM(item.id, e.target.value, "Jane Doe", "JD", "#6d597a");
             }
           }}
         >
-          <option value="intake">INTAKE</option>
-          <option value="initiation">INITIATION</option>
+          <option value="intake">Project Intake</option>
+          {lanes.map(lane => (
+            <option key={lane.id} value={lane.id}>{lane.name}</option>
+          ))}
         </select>
         
-        <span className={`priority-icon priority-${item.priority.toLowerCase()}`} title={item.priority}>
-          {item.priority === 'Critical' && '↑↑'}
-          {item.priority === 'High' && '↑'}
-          {item.priority === 'Medium' && '='}
-          {item.priority === 'Low' && '↓'}
-        </span>
-        
-        <div 
-          className="user-avatar mini unassigned" 
-          title="Click to Assign PM"
-          onClick={() => onAssignPM(item.id, "Jane Doe", "JD", "#ec4899")}
-        >
-          ?
+        <div className="avatar-dropdown-container">
+          <div 
+            className="user-avatar mini unassigned" 
+            title="Click to Assign PM"
+            onClick={() => setDropdownOpenId(dropdownOpenId === item.id ? null : item.id)}
+          >
+            ?
+          </div>
+          {dropdownOpenId === item.id && (
+            <div className="pm-dropdown-menu">
+              {PM_USERS.map((u, i) => (
+                <div key={i} className="pm-dropdown-item" onClick={() => handlePMSelect(item.id, u, true)}>
+                  <div className={`user-avatar mini ${u.isUnassigned ? 'unassigned' : ''}`} style={{ backgroundColor: u.isUnassigned ? '' : u.color }}>
+                    {u.initials}
+                  </div>
+                  <span>{u.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

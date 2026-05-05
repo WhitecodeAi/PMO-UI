@@ -1,6 +1,6 @@
 export const projectData = {
-    "p1": {
-        "id": "p1",
+    "WC001": {
+        "id": "WC001",
         "title": "New Arts, Commerce & Science College, Shevgaon",
         "phase": "initiation",
         "phaseName": "Project Initiation",
@@ -8,7 +8,7 @@ export const projectData = {
         "owner": {
             "name": "John Smith",
             "initials": "JS",
-            "color": "#3b82f6"
+            "color": "#475569"
         },
         "date": "Jan 15, 2027",
         "tags": [
@@ -24,11 +24,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "JS",
-                "color": "#3b82f6"
+                "color": "#475569"
             },
             {
                 "initials": "AL",
-                "color": "#f59e0b"
+                "color": "#8d6e63"
             }
         ],
         "stages": {
@@ -129,8 +129,8 @@ export const projectData = {
             ]
         }
     },
-    "p2": {
-        "id": "p2",
+    "WC002": {
+        "id": "WC002",
         "title": "Bhandardara Tours and Tourism, Bhatghar, Ahilya Nagar",
         "phase": "initiation",
         "phaseName": "Project Initiation",
@@ -138,7 +138,7 @@ export const projectData = {
         "owner": {
             "name": "Amy Lee",
             "initials": "AL",
-            "color": "#f59e0b"
+            "color": "#8d6e63"
         },
         "date": "Feb 10, 2027",
         "tags": [
@@ -154,7 +154,7 @@ export const projectData = {
         "team": [
             {
                 "initials": "AL",
-                "color": "#f59e0b"
+                "color": "#8d6e63"
             }
         ],
         "stages": {
@@ -255,8 +255,8 @@ export const projectData = {
             ]
         }
     },
-    "p3": {
-        "id": "p3",
+    "WC003": {
+        "id": "WC003",
         "title": "BPCA CPE CMS Upgrade",
         "phase": "initiation",
         "phaseName": "Project Initiation",
@@ -264,7 +264,7 @@ export const projectData = {
         "owner": {
             "name": "Mike Kelly",
             "initials": "MK",
-            "color": "#10b981"
+            "color": "#5f7161"
         },
         "date": "Jan 20, 2027",
         "tags": [
@@ -280,11 +280,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "MK",
-                "color": "#10b981"
+                "color": "#5f7161"
             },
             {
                 "initials": "JD",
-                "color": "#ec4899"
+                "color": "#6d597a"
             }
         ],
         "stages": {
@@ -385,8 +385,8 @@ export const projectData = {
             ]
         }
     },
-    "p4": {
-        "id": "p4",
+    "WC004": {
+        "id": "WC004",
         "title": "Venkatesh Mahajan Senior College, Dharashiv",
         "phase": "design",
         "phaseName": "Design",
@@ -394,7 +394,7 @@ export const projectData = {
         "owner": {
             "name": "Jane Doe",
             "initials": "JD",
-            "color": "#ec4899"
+            "color": "#6d597a"
         },
         "date": "Nov 30, 2026",
         "tags": [
@@ -410,7 +410,7 @@ export const projectData = {
         "team": [
             {
                 "initials": "JD",
-                "color": "#ec4899"
+                "color": "#6d597a"
             }
         ],
         "stages": {
@@ -511,8 +511,8 @@ export const projectData = {
             ]
         }
     },
-    "p5": {
-        "id": "p5",
+    "WC005": {
+        "id": "WC005",
         "title": "Mudhoji High School and Junior College, Phaltan",
         "phase": "design",
         "phaseName": "Design",
@@ -520,7 +520,7 @@ export const projectData = {
         "owner": {
             "name": "Tom Rogers",
             "initials": "TR",
-            "color": "#8b5cf6"
+            "color": "#546a7b"
         },
         "date": "Dec 15, 2026",
         "tags": [
@@ -532,11 +532,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "TR",
-                "color": "#8b5cf6"
+                "color": "#546a7b"
             },
             {
                 "initials": "AL",
-                "color": "#f59e0b"
+                "color": "#8d6e63"
             }
         ],
         "stages": {
@@ -637,8 +637,8 @@ export const projectData = {
             ]
         }
     },
-    "p6": {
-        "id": "p6",
+    "WC006": {
+        "id": "WC006",
         "title": "Samarth Group of Institutions, Belhe",
         "phase": "design",
         "phaseName": "Design",
@@ -646,7 +646,7 @@ export const projectData = {
         "owner": {
             "name": "Jane Doe",
             "initials": "JD",
-            "color": "#ec4899"
+            "color": "#6d597a"
         },
         "date": "Jan 05, 2027",
         "tags": [
@@ -662,11 +662,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "JD",
-                "color": "#ec4899"
+                "color": "#6d597a"
             },
             {
                 "initials": "JS",
-                "color": "#3b82f6"
+                "color": "#475569"
             }
         ],
         "stages": {
@@ -767,8 +767,8 @@ export const projectData = {
             ]
         }
     },
-    "p7": {
-        "id": "p7",
+    "WC007": {
+        "id": "WC007",
         "title": "Sikkim Government Sanskrit Mahavidyalaya, Samdong, Sikkim",
         "phase": "development",
         "phaseName": "Development",
@@ -776,7 +776,7 @@ export const projectData = {
         "owner": {
             "name": "Mike Kelly",
             "initials": "MK",
-            "color": "#10b981"
+            "color": "#5f7161"
         },
         "date": "Dec 20, 2026",
         "tags": [
@@ -792,7 +792,7 @@ export const projectData = {
         "team": [
             {
                 "initials": "MK",
-                "color": "#10b981"
+                "color": "#5f7161"
             }
         ],
         "stages": {
@@ -893,8 +893,8 @@ export const projectData = {
             ]
         }
     },
-    "p8": {
-        "id": "p8",
+    "WC008": {
+        "id": "WC008",
         "title": "Mahatma Phule Nutan Mahavidyalaya, Mirajgaon",
         "phase": "development",
         "phaseName": "Development",
@@ -902,7 +902,7 @@ export const projectData = {
         "owner": {
             "name": "John Smith",
             "initials": "JS",
-            "color": "#3b82f6"
+            "color": "#475569"
         },
         "date": "Nov 15, 2026",
         "tags": [
@@ -918,11 +918,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "JS",
-                "color": "#3b82f6"
+                "color": "#475569"
             },
             {
                 "initials": "TR",
-                "color": "#8b5cf6"
+                "color": "#546a7b"
             }
         ],
         "stages": {
@@ -1023,8 +1023,8 @@ export const projectData = {
             ]
         }
     },
-    "p9": {
-        "id": "p9",
+    "WC009": {
+        "id": "WC009",
         "title": "Agasti Arts, Commerce and Dadasaheb Rupwate Science College, Akole",
         "phase": "development",
         "phaseName": "Development",
@@ -1032,7 +1032,7 @@ export const projectData = {
         "owner": {
             "name": "Amy Lee",
             "initials": "AL",
-            "color": "#f59e0b"
+            "color": "#8d6e63"
         },
         "date": "Oct 30, 2026",
         "tags": [
@@ -1044,7 +1044,7 @@ export const projectData = {
         "team": [
             {
                 "initials": "AL",
-                "color": "#f59e0b"
+                "color": "#8d6e63"
             }
         ],
         "stages": {
@@ -1145,8 +1145,8 @@ export const projectData = {
             ]
         }
     },
-    "p10": {
-        "id": "p10",
+    "WC010": {
+        "id": "WC010",
         "title": "VPM'S K.G.Joshi College of Arts and N.G. Bedekar College of Commerce",
         "phase": "development",
         "phaseName": "Development",
@@ -1154,7 +1154,7 @@ export const projectData = {
         "owner": {
             "name": "Mike Kelly",
             "initials": "MK",
-            "color": "#10b981"
+            "color": "#5f7161"
         },
         "date": "Dec 10, 2026",
         "tags": [
@@ -1170,11 +1170,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "MK",
-                "color": "#10b981"
+                "color": "#5f7161"
             },
             {
                 "initials": "JS",
-                "color": "#3b82f6"
+                "color": "#475569"
             }
         ],
         "stages": {
@@ -1275,8 +1275,8 @@ export const projectData = {
             ]
         }
     },
-    "p11": {
-        "id": "p11",
+    "WC011": {
+        "id": "WC011",
         "title": "Lal Bahadur Shastri College, Satara",
         "phase": "testing",
         "phaseName": "Testing",
@@ -1284,7 +1284,7 @@ export const projectData = {
         "owner": {
             "name": "Tom Rogers",
             "initials": "TR",
-            "color": "#8b5cf6"
+            "color": "#546a7b"
         },
         "date": "Oct 15, 2026",
         "tags": [
@@ -1300,7 +1300,7 @@ export const projectData = {
         "team": [
             {
                 "initials": "TR",
-                "color": "#8b5cf6"
+                "color": "#546a7b"
             }
         ],
         "stages": {
@@ -1401,8 +1401,8 @@ export const projectData = {
             ]
         }
     },
-    "p12": {
-        "id": "p12",
+    "WC012": {
+        "id": "WC012",
         "title": "Rural Education Society, Mirajgaon",
         "phase": "testing",
         "phaseName": "Testing",
@@ -1410,7 +1410,7 @@ export const projectData = {
         "owner": {
             "name": "Jane Doe",
             "initials": "JD",
-            "color": "#ec4899"
+            "color": "#6d597a"
         },
         "date": "Nov 05, 2026",
         "tags": [
@@ -1426,11 +1426,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "JD",
-                "color": "#ec4899"
+                "color": "#6d597a"
             },
             {
                 "initials": "AL",
-                "color": "#f59e0b"
+                "color": "#8d6e63"
             }
         ],
         "stages": {
@@ -1531,8 +1531,8 @@ export const projectData = {
             ]
         }
     },
-    "p13": {
-        "id": "p13",
+    "WC013": {
+        "id": "WC013",
         "title": "Dadasaheb Bidkar Arts, Science & Commerce College Peth",
         "phase": "golive",
         "phaseName": "Go Live",
@@ -1540,7 +1540,7 @@ export const projectData = {
         "owner": {
             "name": "John Smith",
             "initials": "JS",
-            "color": "#3b82f6"
+            "color": "#475569"
         },
         "date": "Oct 01, 2026",
         "tags": [
@@ -1556,7 +1556,7 @@ export const projectData = {
         "team": [
             {
                 "initials": "JS",
-                "color": "#3b82f6"
+                "color": "#475569"
             }
         ],
         "stages": {
@@ -1657,8 +1657,8 @@ export const projectData = {
             ]
         }
     },
-    "p14": {
-        "id": "p14",
+    "WC014": {
+        "id": "WC014",
         "title": "Lady Irwin College, Delhi",
         "phase": "golive",
         "phaseName": "Go Live",
@@ -1666,7 +1666,7 @@ export const projectData = {
         "owner": {
             "name": "Jane Doe",
             "initials": "JD",
-            "color": "#ec4899"
+            "color": "#6d597a"
         },
         "date": "Sep 25, 2026",
         "tags": [
@@ -1678,11 +1678,11 @@ export const projectData = {
         "team": [
             {
                 "initials": "JD",
-                "color": "#ec4899"
+                "color": "#6d597a"
             },
             {
                 "initials": "TR",
-                "color": "#8b5cf6"
+                "color": "#546a7b"
             }
         ],
         "stages": {
@@ -1792,7 +1792,7 @@ export const projectData = {
         "owner": {
             "name": "Mike Kelly",
             "initials": "MK",
-            "color": "#10b981"
+            "color": "#5f7161"
         },
         "date": "Oct 05, 2026",
         "tags": [
@@ -1808,7 +1808,7 @@ export const projectData = {
         "team": [
             {
                 "initials": "MK",
-                "color": "#10b981"
+                "color": "#5f7161"
             }
         ],
         "stages": {
@@ -1921,7 +1921,7 @@ export const lanes = [
 
 export const intakeData = [
   {
-    id: "REQ-001",
+    id: "WC015",
     title: "Alumni Portal Revamp",
     epic: "Web Development",
     requester: "Sarah Jenkins",
@@ -1929,7 +1929,7 @@ export const intakeData = [
     date: "2027-02-15"
   },
   {
-    id: "REQ-002",
+    id: "WC016",
     title: "New Admission CRM Integration",
     epic: "Backend",
     requester: "David Kim",
@@ -1937,7 +1937,7 @@ export const intakeData = [
     date: "2027-02-18"
   },
   {
-    id: "REQ-003",
+    id: "WC017",
     title: "Library Management System Upgrade",
     epic: "Infrastructure",
     requester: "Dr. Patel",
@@ -1945,7 +1945,7 @@ export const intakeData = [
     date: "2027-02-20"
   },
   {
-    id: "REQ-004",
+    id: "WC018",
     title: "Campus Virtual Tour VR",
     epic: "Innovation",
     requester: "Marketing Dept",
