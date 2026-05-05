@@ -1918,3 +1918,38 @@ export const lanes = [
   { id: 'testing', name: 'Testing' },
   { id: 'golive', name: 'Go Live' },
 ];
+
+export const intakeData = [
+  {
+    id: "REQ-001",
+    title: "Alumni Portal Revamp",
+    epic: "Web Development",
+    requester: "Sarah Jenkins",
+    priority: "High",
+    date: "2027-02-15"
+  },
+  {
+    id: "REQ-002",
+    title: "New Admission CRM Integration",
+    epic: "Backend",
+    requester: "David Kim",
+    priority: "Critical",
+    date: "2027-02-18"
+  },
+  {
+    id: "REQ-003",
+    title: "Library Management System Upgrade",
+    epic: "Infrastructure",
+    requester: "Dr. Patel",
+    priority: "Medium",
+    date: "2027-02-20"
+  },
+  {
+    id: "REQ-004",
+    title: "Campus Virtual Tour VR",
+    epic: "Innovation",
+    requester: "Marketing Dept",
+    priority: "Low",
+    date: "2027-02-22"
+  }
+];

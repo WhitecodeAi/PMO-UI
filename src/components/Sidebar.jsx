@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Sidebar() {
+export default function Sidebar({ activeView, onViewChange }) {
   return (
     <nav className="sidebar">
         <div className="logo">
@@ -12,8 +12,11 @@ export default function Sidebar() {
             </svg>
         </div>
         <div className="nav-items">
-            <a href="#" className="nav-item active" title="Board">
+            <a href="#" className={`nav-item ${activeView === 'board' ? 'active' : ''}`} title="Board" onClick={(e) => { e.preventDefault(); onViewChange('board'); }}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+            </a>
+            <a href="#" className={`nav-item ${activeView === 'intake' ? 'active' : ''}`} title="Project Intake" onClick={(e) => { e.preventDefault(); onViewChange('intake'); }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
             </a>
             <a href="#" className="nav-item" title="Analytics">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
