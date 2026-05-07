@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Topbar from './components/Topbar';
 import Board from './components/Board';
 import DetailsPanel from './components/DetailsPanel';
@@ -8,9 +8,17 @@ import { projectData as initialProjectData, lanes, intakeData as initialIntakeDa
 
 function App() {
   const [activeView, setActiveView] = useState('board');
+  const [role, setRole] = useState('pmo'); // 'pmo' or 'business'
   const [projects, setProjects] = useState(initialProjectData);
   const [intakeRequests, setIntakeRequests] = useState(initialIntakeData);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
+
+  // Force business users out of the board view
+  useEffect(() => {
+    if (role === 'business' && activeView === 'board') {
+      setActiveView('intake');
+    }
+  }, [role, activeView]);
 
   const handleAssignPM = (intakeId, targetPhase = 'initiation', pmName = "New PM", pmInitials = "NP", pmColor = "#546a7b") => {
     const request = intakeRequests.find(r => r.id === intakeId);
@@ -200,9 +208,9 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar activeView={activeView} onViewChange={setActiveView} />
+      <Sidebar activeView={activeView} onViewChange={setActiveView} role={role} />
       <main className="main-content">
-        <Topbar activeView={activeView} onViewChange={setActiveView} />
+        <Topbar activeView={activeView} onViewChange={setActiveView} role={role} setRole={setRole} />
         {activeView === 'board' ? (
           <Board 
             lanes={lanes} 
@@ -221,6 +229,7 @@ function App() {
             onCreateRequest={handleCreateRequest}
             onStatusChange={handleStatusChange}
             onCardClick={handleCardClick}
+            role={role}
           />
         )}
       </main>

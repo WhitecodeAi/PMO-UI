@@ -18,7 +18,7 @@ const FEATURE_OPTIONS = [
   "SSL Certificate"
 ];
 
-export default function ProjectPool({ projects = {}, lanes = [], intakeRequests = [], onAssignPM, onUpdatePM, onCreateRequest, onStatusChange, onCardClick }) {
+export default function ProjectPool({ projects = {}, lanes = [], intakeRequests = [], onAssignPM, onUpdatePM, onCreateRequest, onStatusChange, onCardClick, role }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeExpanded, setActiveExpanded] = useState(true);
@@ -131,37 +131,56 @@ export default function ProjectPool({ projects = {}, lanes = [], intakeRequests 
         <span className="pool-title">{project.title}</span>
       </div>
       <div className="pool-row-right">
-        <select 
-          className="status-dropdown" 
-          value={project.phase}
-          onChange={(e) => onStatusChange(project.id, e.target.value)}
-        >
-          {lanes.map(lane => (
-            <option key={lane.id} value={lane.id}>{lane.name}</option>
-          ))}
-        </select>
-        <div className="avatar-dropdown-container">
-          <div 
-            className="user-avatar mini" 
-            style={{ backgroundColor: project.owner?.color || '#475569' }} 
-            title={project.owner?.name}
-            onClick={() => setDropdownOpenId(dropdownOpenId === project.id ? null : project.id)}
-          >
-            {project.owner?.initials || '?'}
-          </div>
-          {dropdownOpenId === project.id && (
-            <div className="pm-dropdown-menu">
-              {PM_USERS.map((u, i) => (
-                <div key={i} className="pm-dropdown-item" onClick={() => handlePMSelect(project.id, u, false)}>
-                  <div className={`user-avatar mini ${u.isUnassigned ? 'unassigned' : ''}`} style={{ backgroundColor: u.isUnassigned ? '' : u.color }}>
-                    {u.initials}
-                  </div>
-                  <span>{u.name}</span>
-                </div>
-              ))}
+        {role === 'business' ? (
+          <>
+            <span className="status-badge" style={{ padding: '4px 8px', background: '#f1f5f9', color: '#475569', borderRadius: '4px', fontSize: '12px', fontWeight: '500', minWidth: '100px', textAlign: 'center' }}>
+              {project.phaseName}
+            </span>
+            <div className="avatar-dropdown-container">
+              <div 
+                className="user-avatar mini" 
+                style={{ backgroundColor: project.owner?.color || '#475569', cursor: 'default' }} 
+                title={project.owner?.name}
+              >
+                {project.owner?.initials || '?'}
+              </div>
             </div>
-          )}
-        </div>
+          </>
+        ) : (
+          <>
+            <select 
+              className="status-dropdown" 
+              value={project.phase}
+              onChange={(e) => onStatusChange(project.id, e.target.value)}
+            >
+              {lanes.map(lane => (
+                <option key={lane.id} value={lane.id}>{lane.name}</option>
+              ))}
+            </select>
+            <div className="avatar-dropdown-container">
+              <div 
+                className="user-avatar mini" 
+                style={{ backgroundColor: project.owner?.color || '#475569' }} 
+                title={project.owner?.name}
+                onClick={() => setDropdownOpenId(dropdownOpenId === project.id ? null : project.id)}
+              >
+                {project.owner?.initials || '?'}
+              </div>
+              {dropdownOpenId === project.id && (
+                <div className="pm-dropdown-menu">
+                  {PM_USERS.map((u, i) => (
+                    <div key={i} className="pm-dropdown-item" onClick={() => handlePMSelect(project.id, u, false)}>
+                      <div className={`user-avatar mini ${u.isUnassigned ? 'unassigned' : ''}`} style={{ backgroundColor: u.isUnassigned ? '' : u.color }}>
+                        {u.initials}
+                      </div>
+                      <span>{u.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -173,43 +192,105 @@ export default function ProjectPool({ projects = {}, lanes = [], intakeRequests 
         <span className="pool-title">{item.title}</span>
       </div>
       <div className="pool-row-right">
-        <select 
-          className="status-dropdown" 
-          value="intake"
-          onChange={(e) => {
-            if(e.target.value !== 'intake') {
-              onAssignPM(item.id, e.target.value, "Jane Doe", "JD", "#6d597a");
-            }
-          }}
-        >
-          <option value="intake">New Project</option>
-          {lanes.map(lane => (
-            <option key={lane.id} value={lane.id}>{lane.name}</option>
-          ))}
-        </select>
-        
-        <div className="avatar-dropdown-container">
-          <div 
-            className="user-avatar mini unassigned" 
-            title="Click to Assign PM"
-            onClick={() => setDropdownOpenId(dropdownOpenId === item.id ? null : item.id)}
-          >
-            ?
-          </div>
-          {dropdownOpenId === item.id && (
-            <div className="pm-dropdown-menu">
-              {PM_USERS.map((u, i) => (
-                <div key={i} className="pm-dropdown-item" onClick={() => handlePMSelect(item.id, u, true)}>
-                  <div className={`user-avatar mini ${u.isUnassigned ? 'unassigned' : ''}`} style={{ backgroundColor: u.isUnassigned ? '' : u.color }}>
-                    {u.initials}
-                  </div>
-                  <span>{u.name}</span>
-                </div>
+        {role === 'business' ? (
+          <span className="status-badge" style={{ padding: '4px 8px', background: '#f1f5f9', color: '#475569', borderRadius: '4px', fontSize: '12px', fontWeight: '500' }}>New Project</span>
+        ) : (
+          <>
+            <select 
+              className="status-dropdown" 
+              value="intake"
+              onChange={(e) => {
+                if(e.target.value !== 'intake') {
+                  onAssignPM(item.id, e.target.value, "Jane Doe", "JD", "#6d597a");
+                }
+              }}
+            >
+              <option value="intake">New Project</option>
+              {lanes.map(lane => (
+                <option key={lane.id} value={lane.id}>{lane.name}</option>
               ))}
+            </select>
+            
+            <div className="avatar-dropdown-container">
+              <div 
+                className="user-avatar mini unassigned" 
+                title="Click to Assign PM"
+                onClick={() => setDropdownOpenId(dropdownOpenId === item.id ? null : item.id)}
+              >
+                ?
+              </div>
+              {dropdownOpenId === item.id && (
+                <div className="pm-dropdown-menu">
+                  {PM_USERS.map((u, i) => (
+                    <div key={i} className="pm-dropdown-item" onClick={() => handlePMSelect(item.id, u, true)}>
+                      <div className={`user-avatar mini ${u.isUnassigned ? 'unassigned' : ''}`} style={{ backgroundColor: u.isUnassigned ? '' : u.color }}>
+                        {u.initials}
+                      </div>
+                      <span>{u.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  const activeAccordion = (
+    <div className="pool-accordion" key="active">
+      <div className="pool-accordion-header" onClick={() => setActiveExpanded(!activeExpanded)}>
+        <svg className={`chevron ${activeExpanded ? 'expanded' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+        <h3>Active Projects <span className="item-count">({activeProjectsList.length} work items)</span></h3>
+      </div>
+      {activeExpanded && (
+        <div className="pool-accordion-body">
+          {activeProjectsList.length > 0 ? (
+            activeProjectsList.map(renderActiveRow)
+          ) : (
+            <div className="empty-row">No active projects found.</div>
           )}
         </div>
+      )}
+    </div>
+  );
+
+  const intakeAccordion = (
+    <div className="pool-accordion" key="intake">
+      <div className="pool-accordion-header" onClick={() => setIntakeExpanded(!intakeExpanded)}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <svg className={`chevron ${intakeExpanded ? 'expanded' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <h3>{role === 'business' ? 'New Projects' : 'Intake Queue'} <span className="item-count">({filteredIntake.length} work items)</span></h3>
+        </div>
+        {role === 'business' && (
+          <button 
+            className="create-btn" 
+            style={{ marginLeft: 'auto', padding: '6px 12px', fontSize: '13px' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setScopeExpanded(false);
+              setClientExpanded(true);
+              setIsModalOpen(true);
+            }}
+          >
+            Create New
+          </button>
+        )}
       </div>
+      {intakeExpanded && (
+        <div className="pool-accordion-body">
+          {filteredIntake.length > 0 ? (
+            filteredIntake.map(renderIntakeRow)
+          ) : (
+            <div className="empty-row">No new requests in the queue.</div>
+          )}
+        </div>
+      )}
     </div>
   );
 
@@ -231,57 +312,17 @@ export default function ProjectPool({ projects = {}, lanes = [], intakeRequests 
       </div>
 
       <div className="pool-content">
-        {/* Active Projects Accordion */}
-        <div className="pool-accordion">
-          <div className="pool-accordion-header" onClick={() => setActiveExpanded(!activeExpanded)}>
-            <svg className={`chevron ${activeExpanded ? 'expanded' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-            <h3>Active Projects <span className="item-count">({activeProjectsList.length} work items)</span></h3>
-          </div>
-          {activeExpanded && (
-            <div className="pool-accordion-body">
-              {activeProjectsList.length > 0 ? (
-                activeProjectsList.map(renderActiveRow)
-              ) : (
-                <div className="empty-row">No active projects found.</div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Intake Queue Accordion */}
-        <div className="pool-accordion">
-          <div className="pool-accordion-header" onClick={() => setIntakeExpanded(!intakeExpanded)}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <svg className={`chevron ${intakeExpanded ? 'expanded' : ''}`} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-              <h3>Intake Queue <span className="item-count">({filteredIntake.length} work items)</span></h3>
-            </div>
-            <button 
-              className="create-btn" 
-              style={{ marginLeft: 'auto', padding: '6px 12px', fontSize: '13px' }}
-              onClick={(e) => {
-                e.stopPropagation();
-                setScopeExpanded(false);
-                setClientExpanded(true);
-                setIsModalOpen(true);
-              }}
-            >
-              Create New
-            </button>
-          </div>
-          {intakeExpanded && (
-            <div className="pool-accordion-body">
-              {filteredIntake.length > 0 ? (
-                filteredIntake.map(renderIntakeRow)
-              ) : (
-                <div className="empty-row">No new requests in the queue.</div>
-              )}
-            </div>
-          )}
-        </div>
+        {role === 'business' ? (
+          <>
+            {intakeAccordion}
+            {activeAccordion}
+          </>
+        ) : (
+          <>
+            {activeAccordion}
+            {intakeAccordion}
+          </>
+        )}
       </div>
 
       {isModalOpen && (

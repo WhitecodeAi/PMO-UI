@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Topbar({ activeView, onViewChange }) {
+export default function Topbar({ activeView, onViewChange, role, setRole }) {
   return (
     <header className="topbar">
         <div className="header-left">
@@ -11,23 +11,35 @@ export default function Topbar({ activeView, onViewChange }) {
                 <h1>Projects</h1>
             </div>
             
-            <div className="project-tabs">
-              <button 
-                className={`project-tab ${activeView === 'intake' ? 'active' : ''}`}
-                onClick={() => onViewChange('intake')}
-              >
-                Projects Pool
-              </button>
-              <button 
-                className={`project-tab ${activeView === 'board' ? 'active' : ''}`}
-                onClick={() => onViewChange('board')}
-              >
-                Status Board
-              </button>
-            </div>
+            {role === 'pmo' && (
+              <div className="project-tabs">
+                <button 
+                  className={`project-tab ${activeView === 'intake' ? 'active' : ''}`}
+                  onClick={() => onViewChange('intake')}
+                >
+                  Projects Pool
+                </button>
+                <button 
+                  className={`project-tab ${activeView === 'board' ? 'active' : ''}`}
+                  onClick={() => onViewChange('board')}
+                >
+                  Status Board
+                </button>
+              </div>
+            )}
         </div>
         <div className="header-right">
-            {/* The right side can have filters or other global actions later */}
+            <div className="role-switcher" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#64748b' }}>
+              <label>Viewing as:</label>
+              <select 
+                value={role} 
+                onChange={(e) => setRole(e.target.value)}
+                style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #e2e8f0', background: '#f8fafc', color: '#0f172a', fontWeight: '500', cursor: 'pointer' }}
+              >
+                <option value="pmo">PMO Team</option>
+                <option value="business">Business Team</option>
+              </select>
+            </div>
         </div>
     </header>
   );
