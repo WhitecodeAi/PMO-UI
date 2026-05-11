@@ -415,7 +415,7 @@ export default function ProjectPool({ projects = {}, lanes = [], intakeRequests 
                     </div>
 
                     <div className="form-group">
-                      <label>Standard Features</label>
+                      <label>Scope & Features</label>
                       <div className="features-grid">
                         {FEATURE_OPTIONS.map(feat => (
                           <label key={feat} className="feature-checkbox">

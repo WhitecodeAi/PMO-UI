@@ -201,6 +201,21 @@ function App() {
     });
   };
 
+  const handleUpdateIntakeDetails = (intakeId, field, value) => {
+    setIntakeRequests(prev => prev.map(req => {
+      if (req.id === intakeId) {
+        return {
+          ...req,
+          details: {
+            ...req.details,
+            [field]: value
+          }
+        };
+      }
+      return req;
+    }));
+  };
+
   // Find the full project object based on selected ID
   const selectedProjectKey = Object.keys(projects).find(key => projects[key].id === selectedProjectId);
   const selectedIntake = intakeRequests.find(r => r.id === selectedProjectId);
@@ -239,6 +254,8 @@ function App() {
         onClose={closePanel}
         onToggleStage={handleToggleStage}
         onUpdateStageDetail={handleUpdateStageDetail}
+        onUpdateIntakeDetails={handleUpdateIntakeDetails}
+        isIntake={!selectedProjectKey && !!selectedIntake}
         lanes={lanes}
       />
     </div>
